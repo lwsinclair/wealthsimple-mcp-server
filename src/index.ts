@@ -3,7 +3,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getStatusTool } from './tools/company-updates/get-status';
 import { getPodcastsTool } from './tools/company-updates/get-podcasts';
 import { getTldrArticlesTool } from './tools/company-updates/get-tldr-articles';
-import { searchHelpCentreTool } from './tools/help-centre/search';
+import {
+  searchHelpCentreTool,
+  searchPromotionsTool,
+} from './tools/help-centre/search';
 import { getHelpCentreArticleTool } from './tools/help-centre/get-article';
 
 const tools = [
@@ -11,6 +14,7 @@ const tools = [
   getPodcastsTool,
   getTldrArticlesTool,
   searchHelpCentreTool,
+  searchPromotionsTool,
   getHelpCentreArticleTool,
 ];
 

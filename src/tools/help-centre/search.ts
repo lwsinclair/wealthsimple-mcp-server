@@ -1,18 +1,26 @@
 import { ToolDefinition } from '../../common-types';
 import { HelpCentreSearchResponse } from './types';
+import { HELP_CENTRE_HOSTNAMES } from './constants';
 import { z } from 'zod';
 
 const searchHelpCentreArgsSchema = z.object({
-  query: z.string().describe('Search query for Help Centre articles'),
+  query: z
+    .string()
+    .describe(
+      'Search query. The query should be concise as it is keyword based and does not support natural language search well. For example: "What is the minimum balance for a TFSA?" = BAD, "TFSA minimum balance" = GOOD. Leave out redundant words like "wealthsimple" since it is implied.'
+    ),
   locale: z
     .enum(['en-ca', 'fr-ca'])
     .default('en-ca')
     .describe('Locale for the search results'),
 });
 
-const MAX_RESULTS = 10;
+const MAX_RESULTS = 15;
 
-const handler = async (args: Record<string, unknown> | undefined) => {
+const searchHandler = async (
+  args: Record<string, unknown> | undefined,
+  hostname: string
+) => {
   if (!args) {
     throw new Error('Arguments are required');
   }
@@ -22,7 +30,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
   try {
     const encodedQuery = encodeURIComponent(parsedArgs.query);
     const response = await fetch(
-      `https://help.wealthsimple.com/api/v2/help_center/articles/search.json?query=${encodedQuery}&locale=${parsedArgs.locale}`
+      `https://${hostname}/api/v2/help_center/articles/search.json?query=${encodedQuery}&locale=${parsedArgs.locale}`
     );
 
     // Check if response is ok and content type is JSON
@@ -32,9 +40,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
       !contentType ||
       !contentType.includes('application/json')
     ) {
-      throw new Error(
-        `Error searching Help Centre: ${response.statusText} (Content type: ${contentType})`
-      );
+      throw new Error(`Error searching articles: ${response.statusText}`);
     }
 
     const data = (await response.json()) as HelpCentreSearchResponse;
@@ -62,7 +68,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
       content: [
         {
           type: 'text' as const,
-          text: `Error searching Help Centre: ${errorMessage}`,
+          text: `Error searching articles: ${errorMessage}`,
         },
       ],
     };
@@ -72,9 +78,18 @@ const handler = async (args: Record<string, unknown> | undefined) => {
 export const searchHelpCentreTool: ToolDefinition = {
   schema: {
     name: 'search_wealthsimple_help_centre',
-    description:
-      'Search Wealthsimple Help Centre articles by query. The query should be concise as it is keyword based and does not support natural language search well. For example: "What is the minimum balance for a TFSA?" = BAD, "TFSA minimum balance" = GOOD',
+    description: 'Search Wealthsimple Help Centre articles by query',
     inputSchema: searchHelpCentreArgsSchema.shape,
   },
-  handler,
+  handler: (args) => searchHandler(args, HELP_CENTRE_HOSTNAMES.help),
+};
+
+export const searchPromotionsTool: ToolDefinition = {
+  schema: {
+    name: 'search_wealthsimple_promotions',
+    description:
+      'Search Wealthsimple Promotions articles by query. Use this for questions about current or past promotions, referral programs, and special offers.',
+    inputSchema: searchHelpCentreArgsSchema.shape,
+  },
+  handler: (args) => searchHandler(args, HELP_CENTRE_HOSTNAMES.promotions),
 };

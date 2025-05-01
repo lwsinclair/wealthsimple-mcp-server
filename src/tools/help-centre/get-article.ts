@@ -1,10 +1,14 @@
 import { z } from 'zod';
 import { ToolDefinition } from '../../common-types';
 import { HelpCentreArticleResponse } from './types';
+import { HELP_CENTRE_HOSTNAMES } from './constants';
 
 const getArticleArgsSchema = z.object({
   id: z.number().describe('The ID of the Help Centre article'),
   locale: z.enum(['en-ca', 'fr-ca']).describe('Locale for the article'),
+  helpCentreType: z
+    .enum(['help', 'promotions'] as const)
+    .describe('Type of help centre to search'),
 });
 
 const handler = async (args: Record<string, unknown> | undefined) => {
@@ -13,10 +17,11 @@ const handler = async (args: Record<string, unknown> | undefined) => {
   }
 
   const parsedArgs = getArticleArgsSchema.parse(args);
+  const hostname = HELP_CENTRE_HOSTNAMES[parsedArgs.helpCentreType];
 
   try {
     const response = await fetch(
-      `https://help.wealthsimple.com/api/v2/help_center/${parsedArgs.locale}/articles/${parsedArgs.id}.json`
+      `https://${hostname}/api/v2/help_center/${parsedArgs.locale}/articles/${parsedArgs.id}.json`
     );
     const data = (await response.json()) as HelpCentreArticleResponse;
 
@@ -35,7 +40,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
       content: [
         {
           type: 'text' as const,
-          text: `Error fetching Help Centre article: ${errorMessage}`,
+          text: `Error fetching article: ${errorMessage}`,
         },
       ],
     };
