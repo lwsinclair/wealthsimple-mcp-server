@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: wealthsimple-mcp-server
+  description: Wealthsimple Model Context Protocol server (public).
+  tags:
+    - mcp
+    - open-source
+spec:
+  type: library
+  lifecycle: experimental
+  owner: engineering
