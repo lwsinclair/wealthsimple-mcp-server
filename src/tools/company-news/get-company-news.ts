@@ -1,5 +1,5 @@
 import { ToolDefinition } from '../../common-types';
-import Parser from 'rss-parser';
+import { extractFromXml } from '@extractus/feed-extractor';
 
 interface NewsItem {
   title: string;
@@ -15,27 +15,29 @@ interface CompanyNewsResponse {
 const PRESS_RELEASES_FEED = 'https://newsroom.wealthsimple.com/feed';
 const PODCASTS_FEED = 'https://feeds.simplecast.com/3Tb7al4A';
 
+async function fetchFeed(url: string): Promise<NewsItem[]> {
+  const response = await fetch(url);
+  const xml = await response.text();
+  const feed = extractFromXml(xml);
+
+  return (feed.entries || []).map((entry) => ({
+    title: entry.title || '',
+    link: entry.link || '',
+    pubDate: entry.published || '',
+  }));
+}
+
 const handler = async (_args: Record<string, unknown> | undefined) => {
   try {
-    const parser = new Parser();
-
     // Fetch both feeds in parallel
-    const [pressReleasesFeed, podcastsFeed] = await Promise.all([
-      parser.parseURL(PRESS_RELEASES_FEED),
-      parser.parseURL(PODCASTS_FEED),
+    const [pressReleases, podcasts] = await Promise.all([
+      fetchFeed(PRESS_RELEASES_FEED),
+      fetchFeed(PODCASTS_FEED),
     ]);
 
     const response: CompanyNewsResponse = {
-      pressReleases: pressReleasesFeed.items.map((item) => ({
-        title: item.title || '',
-        link: item.link || '',
-        pubDate: item.pubDate || '',
-      })),
-      podcasts: podcastsFeed.items.map((item) => ({
-        title: item.title || '',
-        link: item.link || '',
-        pubDate: item.pubDate || '',
-      })),
+      pressReleases,
+      podcasts,
     };
 
     // Format the response for display

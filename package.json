@@ -27,9 +27,9 @@
     "yarn-deduplicate": "^6.0.2"
   },
   "dependencies": {
+    "@extractus/feed-extractor": "^7.1.4",
     "@modelcontextprotocol/sdk": "^1.7.0",
     "agents": "^0.0.65",
-    "rss-parser": "^3.13.0",
     "zod": "^3.24.2"
   }
 }
