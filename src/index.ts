@@ -1,6 +1,19 @@
 import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+
+interface WealthsimpleStatusResponse {
+	page: {
+		id: string;
+		name: string;
+		url: string;
+		time_zone: string;
+		updated_at: string;
+	};
+	status: {
+		indicator: string;
+		description: string;
+	};
+}
 
 // Define our MCP agent with tools
 export class WealthsimpleMCP extends McpAgent {
@@ -10,49 +23,29 @@ export class WealthsimpleMCP extends McpAgent {
 	});
 
 	async init() {
-		// Simple addition tool
+		// Wealthsimple status check tool
 		this.server.tool(
-			"add",
-			{ a: z.number(), b: z.number() },
-			async ({ a, b }) => ({
-				content: [{ type: "text", text: String(a + b) }],
-			})
-		);
-
-		// Calculator tool with multiple operations
-		this.server.tool(
-			"calculate",
-			{
-				operation: z.enum(["add", "subtract", "multiply", "divide"]),
-				a: z.number(),
-				b: z.number(),
-			},
-			async ({ operation, a, b }) => {
-				let result: number;
-				switch (operation) {
-					case "add":
-						result = a + b;
-						break;
-					case "subtract":
-						result = a - b;
-						break;
-					case "multiply":
-						result = a * b;
-						break;
-					case "divide":
-						if (b === 0)
-							return {
-								content: [
-									{
-										type: "text",
-										text: "Error: Cannot divide by zero",
-									},
-								],
-							};
-						result = a / b;
-						break;
+			"get_wealthsimple_status",
+			{},
+			async () => {
+				try {
+					const response = await fetch('https://status.wealthsimple.com/api/v2/status.json');
+					const data = await response.json() as WealthsimpleStatusResponse;
+					return {
+						content: [{
+							type: "text",
+							text: `Status: ${data.status.description} (Indicator: ${data.status.indicator})`
+						}]
+					};
+				} catch (error: unknown) {
+					const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+					return {
+						content: [{
+							type: "text",
+							text: `Error fetching Wealthsimple status: ${errorMessage}`
+						}]
+					};
 				}
-				return { content: [{ type: "text", text: String(result) }] };
 			}
 		);
 	}
