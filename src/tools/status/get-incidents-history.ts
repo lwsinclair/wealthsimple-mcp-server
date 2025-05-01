@@ -1,6 +1,8 @@
 import { ToolDefinition } from '../../common-types';
 import { IncidentsResponse } from './types';
 
+const MAX_INCIDENTS = 20;
+
 const handler = async (_args: Record<string, unknown> | undefined) => {
   try {
     const response = await fetch(
@@ -9,6 +11,7 @@ const handler = async (_args: Record<string, unknown> | undefined) => {
     const data = (await response.json()) as IncidentsResponse;
 
     const formattedIncidents = data.incidents
+      .slice(0, MAX_INCIDENTS)
       .map((incident) => {
         const date = new Date(incident.created_at).toLocaleDateString();
         const resolvedDate = incident.resolved_at
