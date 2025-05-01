@@ -15,6 +15,25 @@ interface WealthsimpleStatusResponse {
 	};
 }
 
+interface WealthsimpleIncident {
+	name: string;
+	status: string;
+	created_at: string;
+	resolved_at: string | null;
+	impact: string;
+}
+
+interface WealthsimpleIncidentsResponse {
+	page: {
+		id: string;
+		name: string;
+		url: string;
+		time_zone: string;
+		updated_at: string;
+	};
+	incidents: Array<WealthsimpleIncident>;
+}
+
 // Define our MCP agent with tools
 export class WealthsimpleMCP extends McpAgent {
 	server = new McpServer({
@@ -43,6 +62,42 @@ export class WealthsimpleMCP extends McpAgent {
 						content: [{
 							type: "text",
 							text: `Error fetching Wealthsimple status: ${errorMessage}`
+						}]
+					};
+				}
+			}
+		);
+
+		// Wealthsimple incidents tool
+		this.server.tool(
+			"get_wealthsimple_incidents",
+			{},
+			async () => {
+				try {
+					const response = await fetch('https://status.wealthsimple.com/api/v2/incidents.json');
+					const data = await response.json() as WealthsimpleIncidentsResponse;
+
+					const formattedIncidents = data.incidents.map(incident => {
+						const date = new Date(incident.created_at).toLocaleDateString();
+						const resolvedDate = incident.resolved_at
+							? new Date(incident.resolved_at).toLocaleDateString()
+							: 'Ongoing';
+
+						return `- ${incident.name}\n  Status: ${incident.status}\n  Impact: ${incident.impact}\n  Created: ${date}\n  Resolved: ${resolvedDate}\n`;
+					}).join('\n');
+
+					return {
+						content: [{
+							type: "text",
+							text: formattedIncidents || 'No recent incidents'
+						}]
+					};
+				} catch (error: unknown) {
+					const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+					return {
+						content: [{
+							type: "text",
+							text: `Error fetching Wealthsimple incidents: ${errorMessage}`
 						}]
 					};
 				}
