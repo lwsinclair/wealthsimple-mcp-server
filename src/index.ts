@@ -1,17 +1,17 @@
 import { McpAgent } from 'agents/mcp';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { getStatusTool } from './tools/status/get-status';
-import { getIncidentsHistoryTool } from './tools/status/get-incidents-history';
+import { getStatusTool } from './tools/company-updates/get-status';
+import { getIncidentsHistoryTool } from './tools/company-updates/get-incidents-history';
+import { getPodcastsTool } from './tools/company-updates/get-podcasts';
 import { searchHelpCentreTool } from './tools/help-centre/search';
 import { getHelpCentreArticleTool } from './tools/help-centre/get-article';
-import { getCompanyNewsTool } from './tools/company-news/get-company-news';
 
 const tools = [
   getStatusTool,
   getIncidentsHistoryTool,
+  getPodcastsTool,
   searchHelpCentreTool,
   getHelpCentreArticleTool,
-  getCompanyNewsTool,
 ];
 
 export class WealthsimpleMCP extends McpAgent {
