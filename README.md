@@ -1,4 +1,4 @@
-# Wealthsimple MCP Server
+# Wealthsimple MCP Server [![Checks](https://github.com/wealthsimple/wealthsimple-mcp-server/actions/workflows/checks.yml/badge.svg)](https://github.com/wealthsimple/wealthsimple-mcp-server/actions/workflows/checks.yml)
 
 Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server to allow Claude Desktop, Cursor, OpenAI Agents SDK, and other MCP clients to query information about Wealthsimple.
 
@@ -6,10 +6,10 @@ It has **limited** capabilities (for now):
 
 | Tool                                   | Description                                                  |
 | -------------------------------------- | ------------------------------------------------------------ |
-| `get_wealthsimple_status`              | Get the current operational status of Wealthsimple services  |
 | `search_wealthsimple_promotions`       | Search through Wealthsimple's ongoing and past promotions    |
 | `search_wealthsimple_help_centre`      | Search through Wealthsimple's Help Centre articles           |
 | `get_wealthsimple_help_centre_article` | Retrieve a specific Help Centre article by its ID and locale |
+| `get_wealthsimple_status`              | Get the current operational status of Wealthsimple services  |
 | `get_wealthsimple_tldr_newsletters`    | Get the most recent TLDR newsletters from Wealthsimple       |
 
 <img width="750" alt="Screenshot 2025-05-01 at 18 32 25" src="https://github.com/user-attachments/assets/18e55806-eaa0-4c7c-8e21-60b8c8ea4474" />

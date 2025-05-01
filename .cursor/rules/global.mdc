@@ -1,0 +1,14 @@
+---
+description: Global rules
+globs:
+alwaysApply: true
+---
+This repo has Model Context Provider (MCP) servers for Wealthsimple public use.
+
+# Testing
+
+Use `jest` + `typescript` for tests.
+
+Never nest tests inside of a `__tests__` subdirectory. Instead, create the test file directly alongside the file it's testing.
+
+Tests should be named with the suffix `.test.ts`, not `.spec.ts`.
