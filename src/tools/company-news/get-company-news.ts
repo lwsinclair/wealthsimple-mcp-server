@@ -15,61 +15,86 @@ interface CompanyNewsResponse {
 const PRESS_RELEASES_FEED = 'https://newsroom.wealthsimple.com/feed';
 const PODCASTS_FEED = 'https://feeds.simplecast.com/3Tb7al4A';
 
-async function fetchFeed(url: string): Promise<NewsItem[]> {
-  const response = await fetch(url);
-  const xml = await response.text();
-  const feed = extractFromXml(xml);
+async function fetchFeed(
+  url: string
+): Promise<{ items: NewsItem[]; error?: string }> {
+  try {
+    const response = await fetch(url);
+    const xml = await response.text();
+    const feed = extractFromXml(xml);
 
-  return (feed.entries || []).map((entry) => ({
-    title: entry.title || '',
-    link: entry.link || '',
-    pubDate: entry.published || '',
-  }));
+    return {
+      items: (feed.entries || []).map((entry) => ({
+        title: entry.title || '',
+        link: entry.link || '',
+        pubDate: entry.published || '',
+      })),
+    };
+  } catch (error: unknown) {
+    return {
+      items: [],
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    };
+  }
 }
 
 const handler = async (_args: Record<string, unknown> | undefined) => {
-  try {
-    // Fetch both feeds in parallel
-    const [pressReleases, podcasts] = await Promise.all([
-      fetchFeed(PRESS_RELEASES_FEED),
-      fetchFeed(PODCASTS_FEED),
-    ]);
+  // Fetch both feeds in parallel
+  const [pressReleasesResult, podcastsResult] = await Promise.all([
+    fetchFeed(PRESS_RELEASES_FEED),
+    fetchFeed(PODCASTS_FEED),
+  ]);
 
-    const response: CompanyNewsResponse = {
-      pressReleases,
-      podcasts,
-    };
+  const response: CompanyNewsResponse = {
+    pressReleases: pressReleasesResult.items,
+    podcasts: podcastsResult.items,
+  };
 
-    // Format the response for display
-    const formatItems = (items: NewsItem[], title: string) => {
-      return [
-        { type: 'text' as const, text: `\n${title}:` },
+  // Format the response for display
+  const formatItems = (items: NewsItem[], title: string, error?: string) => {
+    const results = [{ type: 'text' as const, text: `\n${title}:` }];
+
+    if (error) {
+      results.push({
+        type: 'text' as const,
+        text: `\n  Error fetching ${title.toLowerCase()}: ${error}`,
+      });
+    }
+
+    if (items.length > 0) {
+      results.push(
         ...items.slice(0, 5).map((item) => ({
           type: 'text' as const,
           text: `\n• ${item.title} (${new Date(item.pubDate).toLocaleDateString()})\n  ${item.link}`,
-        })),
-      ];
-    };
+        }))
+      );
+    }
 
-    return {
-      content: [
-        { type: 'text' as const, text: 'Latest Company News and Podcasts' },
-        ...formatItems(response.pressReleases, 'Recent Press Releases'),
-        ...formatItems(response.podcasts, 'Latest Podcasts'),
-      ],
-    };
-  } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error occurred';
-    return {
-      content: [
-        {
-          type: 'text' as const,
-          text: `Error fetching company news: ${errorMessage}`,
-        },
-      ],
-    };
-  }
+    return results;
+  };
+
+  const hasErrors = pressReleasesResult.error || podcastsResult.error;
+
+  return {
+    content: [
+      {
+        type: 'text' as const,
+        text: hasErrors
+          ? 'Company News and Podcasts (with some errors)'
+          : 'Latest Company News and Podcasts',
+      },
+      ...formatItems(
+        response.pressReleases,
+        'Recent Press Releases',
+        pressReleasesResult.error
+      ),
+      ...formatItems(
+        response.podcasts,
+        'Latest Podcasts',
+        podcastsResult.error
+      ),
+    ],
+  };
 };
 
 export const getCompanyNewsTool: ToolDefinition = {
