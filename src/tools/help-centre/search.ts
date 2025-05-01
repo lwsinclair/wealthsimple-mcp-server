@@ -43,7 +43,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
       .slice(0, MAX_RESULTS)
       .map((article) => {
         const date = new Date(article.updated_at).toLocaleDateString();
-        return `- ${article.title}\n  ID: ${article.id}\n  Locale: ${article.locale}\n  URL: ${article.html_url}\n  Last Updated: ${date}\n`;
+        return `- ${article.title}\n  ID: ${article.id}\n  Locale: ${article.locale}\n  URL: ${article.html_url}\n  Snippet: ${article.snippet ?? 'No snippet available'}\n  Last Updated: ${date}\n`;
       })
       .join('\n');
 
