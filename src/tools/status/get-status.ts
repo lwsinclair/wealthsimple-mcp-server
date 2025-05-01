@@ -34,10 +34,7 @@ export const getStatusTool: ToolDefinition = {
     name: 'get_wealthsimple_status',
     description: 'Get the status of Wealthsimple',
     // no inputs
-    inputSchema: {
-      type: 'object',
-      properties: {},
-    },
+    inputSchema: {},
   },
   handler,
 };

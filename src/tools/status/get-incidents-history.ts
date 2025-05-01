@@ -46,10 +46,7 @@ export const getIncidentsHistoryTool: ToolDefinition = {
     name: 'get_wealthsimple_incidents_history',
     description: 'Get the history of incidents for Wealthsimple',
     // no inputs
-    inputSchema: {
-      type: 'object',
-      properties: {},
-    },
+    inputSchema: {},
   },
   handler,
 };

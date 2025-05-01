@@ -13,7 +13,12 @@ export class WealthsimpleMCP extends McpAgent {
 
   async init() {
     tools.forEach((tool) => {
-      this.server.tool(tool.schema.name, tool.schema.inputSchema, tool.handler);
+      this.server.tool(
+        tool.schema.name,
+        tool.schema.description,
+        tool.schema.inputSchema,
+        tool.handler
+      );
     });
   }
 }
