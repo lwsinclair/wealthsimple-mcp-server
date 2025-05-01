@@ -4,12 +4,14 @@ import { getStatusTool } from './tools/status/get-status';
 import { getIncidentsHistoryTool } from './tools/status/get-incidents-history';
 import { searchHelpCentreTool } from './tools/help-centre/search';
 import { getHelpCentreArticleTool } from './tools/help-centre/get-article';
+import { getCompanyNewsTool } from './tools/company-news/get-company-news';
 
 const tools = [
   getStatusTool,
   getIncidentsHistoryTool,
   searchHelpCentreTool,
   getHelpCentreArticleTool,
+  getCompanyNewsTool,
 ];
 
 export class WealthsimpleMCP extends McpAgent {
