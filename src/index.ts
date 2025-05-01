@@ -1,7 +1,7 @@
 import { McpAgent } from 'agents/mcp';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getStatusTool } from './tools/company-updates/get-status';
-import { getTldrArticlesTool } from './tools/company-updates/get-tldr-articles';
+import { getTldrNewslettersTool } from './tools/company-updates/get-tldr-newsletters';
 import {
   searchHelpCentreTool,
   searchPromotionsTool,
@@ -10,7 +10,7 @@ import { getHelpCentreArticleTool } from './tools/help-centre/get-article';
 
 const tools = [
   getStatusTool,
-  getTldrArticlesTool,
+  getTldrNewslettersTool,
   searchHelpCentreTool,
   searchPromotionsTool,
   getHelpCentreArticleTool,

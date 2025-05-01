@@ -94,7 +94,7 @@ const handler = async (_args: Record<string, unknown> | undefined) => {
       content: [
         {
           type: 'text' as const,
-          text: `Error fetching TLDR articles: ${tldrResult.error}`,
+          text: `Error fetching TLDR newsletters: ${tldrResult.error}`,
         },
       ],
     };
@@ -104,17 +104,17 @@ const handler = async (_args: Record<string, unknown> | undefined) => {
     content: [
       {
         type: 'text' as const,
-        text: 'Latest TLDR Articles',
+        text: 'Latest TLDR newsletters',
       },
       ...formatItems(tldrResult.items),
     ],
   };
 };
 
-export const getTldrArticlesTool: ToolDefinition = {
+export const getTldrNewslettersTool: ToolDefinition = {
   schema: {
-    name: 'get_wealthsimple_tldr_articles',
-    description: 'Get the latest Wealthsimple TLDR articles',
+    name: 'get_wealthsimple_tldr_newsletters',
+    description: 'Get the latest Wealthsimple TLDR newsletters',
     // no inputs
     inputSchema: {},
   },
