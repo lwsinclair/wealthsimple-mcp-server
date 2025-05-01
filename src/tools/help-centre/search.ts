@@ -22,7 +22,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
   try {
     const encodedQuery = encodeURIComponent(parsedArgs.query);
     const response = await fetch(
-      `https://help.wealthsimple.com/api/v2/help_center/articles/search?query=${encodedQuery}&locale=${parsedArgs.locale}`
+      `https://help.wealthsimple.com/api/v2/help_center/articles/search.json?query=${encodedQuery}&locale=${parsedArgs.locale}`
     );
 
     // Check if response is ok and content type is JSON
