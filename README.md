@@ -7,7 +7,7 @@ Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server w
 
 Run it locally with `yarn start`, or deploy to Cloudflare Workers with `yarn deploy`.
 
-## Connect Claude Desktop to your MCP server
+## Connect Claude Desktop
 
 You can connect to your remote MCP server from local MCP clients, by using the [mcp-remote proxy](https://www.npmjs.com/package/mcp-remote).
 
