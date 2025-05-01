@@ -1,38 +1,7 @@
 import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-
-interface WealthsimpleStatusResponse {
-	page: {
-		id: string;
-		name: string;
-		url: string;
-		time_zone: string;
-		updated_at: string;
-	};
-	status: {
-		indicator: string;
-		description: string;
-	};
-}
-
-interface WealthsimpleIncident {
-	name: string;
-	status: string;
-	created_at: string;
-	resolved_at: string | null;
-	impact: string;
-}
-
-interface WealthsimpleIncidentsResponse {
-	page: {
-		id: string;
-		name: string;
-		url: string;
-		time_zone: string;
-		updated_at: string;
-	};
-	incidents: Array<WealthsimpleIncident>;
-}
+import { getStatus } from "./tools/status/get-status";
+import { getIncidentsHistory } from "./tools/status/get-incidents-history";
 
 // Define our MCP agent with tools
 export class WealthsimpleMCP extends McpAgent {
@@ -46,62 +15,14 @@ export class WealthsimpleMCP extends McpAgent {
 		this.server.tool(
 			"get_wealthsimple_status",
 			{},
-			async () => {
-				try {
-					const response = await fetch('https://status.wealthsimple.com/api/v2/status.json');
-					const data = await response.json() as WealthsimpleStatusResponse;
-					return {
-						content: [{
-							type: "text",
-							text: `Status: ${data.status.description} (Indicator: ${data.status.indicator})`
-						}]
-					};
-				} catch (error: unknown) {
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-					return {
-						content: [{
-							type: "text",
-							text: `Error fetching Wealthsimple status: ${errorMessage}`
-						}]
-					};
-				}
-			}
+			async () => getStatus()
 		);
 
 		// Wealthsimple incidents tool
 		this.server.tool(
-			"get_wealthsimple_incidents",
+			"get_wealthsimple_incidents_history",
 			{},
-			async () => {
-				try {
-					const response = await fetch('https://status.wealthsimple.com/api/v2/incidents.json');
-					const data = await response.json() as WealthsimpleIncidentsResponse;
-
-					const formattedIncidents = data.incidents.map(incident => {
-						const date = new Date(incident.created_at).toLocaleDateString();
-						const resolvedDate = incident.resolved_at
-							? new Date(incident.resolved_at).toLocaleDateString()
-							: 'Ongoing';
-
-						return `- ${incident.name}\n  Status: ${incident.status}\n  Impact: ${incident.impact}\n  Created: ${date}\n  Resolved: ${resolvedDate}\n`;
-					}).join('\n');
-
-					return {
-						content: [{
-							type: "text",
-							text: formattedIncidents || 'No recent incidents'
-						}]
-					};
-				} catch (error: unknown) {
-					const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-					return {
-						content: [{
-							type: "text",
-							text: `Error fetching Wealthsimple incidents: ${errorMessage}`
-						}]
-					};
-				}
-			}
+			async () => getIncidentsHistory()
 		);
 	}
 }
