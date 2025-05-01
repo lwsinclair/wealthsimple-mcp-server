@@ -1,6 +1,6 @@
 export type ToolResponse = {
-	content: Array<{
-		type: "text";
-		text: string;
-	}>;
+  content: Array<{
+    type: 'text';
+    text: string;
+  }>;
 };

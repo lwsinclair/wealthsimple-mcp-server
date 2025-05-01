@@ -5,15 +5,26 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "format": "biome format --write",
-    "lint:fix": "biome lint --fix",
+    "check_types": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "postinstall": "yarn yarn-deduplicate",
     "start": "wrangler dev",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250430.0",
+    "@types/eslint": "^9.6.1",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "^3.5.3",
     "typescript": "^5.5.2",
-    "wrangler": "^4.13.2"
+    "wrangler": "^4.13.2",
+    "yarn-deduplicate": "^6.0.2"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",

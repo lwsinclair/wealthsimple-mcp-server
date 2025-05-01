@@ -17,7 +17,7 @@ Update with this configuration:
       "command": "npx",
       "args": [
         "mcp-remote",
-        "http://localhost:8787/sse"  // or https://wealthsimple-mcp-server.INSERT-YOUR-ACCOUNT.workers.dev/sse
+        "http://localhost:8787/sse" // or https://wealthsimple-mcp-server.INSERT-YOUR-ACCOUNT.workers.dev/sse
       ]
     }
   }
