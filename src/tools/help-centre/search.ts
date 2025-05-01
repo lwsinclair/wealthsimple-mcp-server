@@ -30,9 +30,7 @@ const handler = async (args: Record<string, unknown> | undefined) => {
       .slice(0, MAX_RESULTS)
       .map((article) => {
         const date = new Date(article.updated_at).toLocaleDateString();
-        const snippet =
-          article.snippet || article.body.substring(0, 200) + '...';
-        return `- ${article.title}\n  URL: ${article.html_url}\n  Last Updated: ${date}\n  Snippet: ${snippet}\n`;
+        return `- ${article.title}\n  ID: ${article.id}\n  Locale: ${article.locale}\n  URL: ${article.html_url}\n  Last Updated: ${date}\n`;
       })
       .join('\n');
 
@@ -60,15 +58,9 @@ const handler = async (args: Record<string, unknown> | undefined) => {
 
 export const searchHelpCentreTool: ToolDefinition = {
   schema: {
-    name: 'search_help_centre',
+    name: 'search_wealthsimple_help_centre',
     description: 'Search Wealthsimple Help Centre articles',
-    inputSchema: {
-      query: z.string().describe('Search query for Help Centre articles'),
-      locale: z
-        .enum(['en-ca', 'fr-ca'])
-        .default('en-ca')
-        .describe('Locale for the search results'),
-    },
+    inputSchema: searchHelpCentreArgsSchema.shape,
   },
   handler,
 };

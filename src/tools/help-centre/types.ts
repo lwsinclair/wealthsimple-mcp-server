@@ -20,3 +20,7 @@ export interface HelpCentreSearchResponse {
   previous_page: string | null;
   results: HelpCentreArticle[];
 }
+
+export interface HelpCentreArticleResponse {
+  article: HelpCentreArticle;
+}
