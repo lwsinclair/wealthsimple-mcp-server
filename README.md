@@ -10,7 +10,9 @@ Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server w
 | `get_wealthsimple_tldr_articles`       | Get the most recent TLDR articles from Wealthsimple                                   |
 | `get_wealthsimple_podcasts`            | Retrieve the latest Wealthsimple podcast episodes                                     |
 
-Run it locally with `yarn start`, or deploy to Cloudflare Workers with `yarn deploy`.
+## Usage
+
+You can either run it locally with `yarn start`, or if you prefer to host it remotely, you can deploy to Cloudflare Workers with `yarn deploy` and connect over SSE.
 
 ## Connect Claude Desktop
 
