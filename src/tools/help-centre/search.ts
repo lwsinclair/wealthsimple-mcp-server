@@ -24,6 +24,19 @@ const handler = async (args: Record<string, unknown> | undefined) => {
     const response = await fetch(
       `https://help.wealthsimple.com/api/v2/help_center/articles/search?query=${encodedQuery}&locale=${parsedArgs.locale}`
     );
+
+    // Check if response is ok and content type is JSON
+    const contentType = response.headers.get('content-type');
+    if (
+      !response.ok ||
+      !contentType ||
+      !contentType.includes('application/json')
+    ) {
+      throw new Error(
+        `Error searching Help Centre: ${response.statusText} (Content type: ${contentType})`
+      );
+    }
+
     const data = (await response.json()) as HelpCentreSearchResponse;
 
     const formattedResults = data.results
