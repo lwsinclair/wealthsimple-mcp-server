@@ -1,6 +1,11 @@
 # Wealthsimple MCP Server
 
-MCP server for Wealthsimple. Capabilities are still limited, but we're working on it!
+Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server with limited capabilities (for now):
+
+- Search Wealthsimple help centre articles
+- Get Wealthsimple company updates (current status, recent TLDR articles, recent podcasts)
+
+Run it locally with `yarn start`, or deploy to Cloudflare Workers with `yarn deploy`.
 
 ## Connect Claude Desktop to your MCP server
 
