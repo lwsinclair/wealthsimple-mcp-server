@@ -2,8 +2,13 @@
 
 Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server with limited capabilities (for now):
 
-- Search Wealthsimple help centre articles
-- Get Wealthsimple company updates (current status, recent TLDR articles, recent podcasts)
+| Tool                                   | Description                                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------------- |
+| `get_wealthsimple_status`              | Get the current operational status of Wealthsimple services                           |
+| `search_wealthsimple_help_centre`      | Search through Wealthsimple's Help Centre articles (supports both English and French) |
+| `get_wealthsimple_help_centre_article` | Retrieve a specific Help Centre article by its ID and locale                          |
+| `get_wealthsimple_tldr_articles`       | Get the most recent TLDR articles from Wealthsimple                                   |
+| `get_wealthsimple_podcasts`            | Retrieve the latest Wealthsimple podcast episodes                                     |
 
 Run it locally with `yarn start`, or deploy to Cloudflare Workers with `yarn deploy`.
 
