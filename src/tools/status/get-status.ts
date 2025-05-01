@@ -1,7 +1,7 @@
-import { ToolResponse } from '../../common-types';
+import { ToolDefinition } from '../../common-types';
 import { StatusResponse } from './types';
 
-export async function getStatus(): Promise<ToolResponse> {
+const handler = async (_args: Record<string, unknown> | undefined) => {
   try {
     const response = await fetch(
       'https://status.wealthsimple.com/api/v2/status.json'
@@ -10,7 +10,7 @@ export async function getStatus(): Promise<ToolResponse> {
     return {
       content: [
         {
-          type: 'text',
+          type: 'text' as const,
           text: `Status: ${data.status.description} (Indicator: ${data.status.indicator})`,
         },
       ],
@@ -21,10 +21,23 @@ export async function getStatus(): Promise<ToolResponse> {
     return {
       content: [
         {
-          type: 'text',
+          type: 'text' as const,
           text: `Error fetching Wealthsimple status: ${errorMessage}`,
         },
       ],
     };
   }
-}
+};
+
+export const getStatusTool: ToolDefinition = {
+  schema: {
+    name: 'get_wealthsimple_status',
+    description: 'Get the status of Wealthsimple',
+    // no inputs
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
+  handler,
+};

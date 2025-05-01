@@ -1,7 +1,7 @@
-import { ToolResponse } from '../../common-types';
+import { ToolDefinition } from '../../common-types';
 import { IncidentsResponse } from './types';
 
-export async function getIncidentsHistory(): Promise<ToolResponse> {
+const handler = async (_args: Record<string, unknown> | undefined) => {
   try {
     const response = await fetch(
       'https://status.wealthsimple.com/api/v2/incidents.json'
@@ -22,7 +22,7 @@ export async function getIncidentsHistory(): Promise<ToolResponse> {
     return {
       content: [
         {
-          type: 'text',
+          type: 'text' as const,
           text: formattedIncidents || 'No recent incidents',
         },
       ],
@@ -33,10 +33,23 @@ export async function getIncidentsHistory(): Promise<ToolResponse> {
     return {
       content: [
         {
-          type: 'text',
+          type: 'text' as const,
           text: `Error fetching Wealthsimple incidents: ${errorMessage}`,
         },
       ],
     };
   }
-}
+};
+
+export const getIncidentsHistoryTool: ToolDefinition = {
+  schema: {
+    name: 'get_wealthsimple_incidents_history',
+    description: 'Get the history of incidents for Wealthsimple',
+    // no inputs
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
+  handler,
+};

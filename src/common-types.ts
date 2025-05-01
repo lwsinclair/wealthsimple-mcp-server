@@ -1,6 +1,11 @@
-export type ToolResponse = {
-  content: Array<{
-    type: 'text';
-    text: string;
+import { Tool } from '@modelcontextprotocol/sdk/types.js';
+
+export interface ToolDefinition {
+  schema: Tool;
+  handler: (args: Record<string, unknown> | undefined) => Promise<{
+    content: Array<{
+      type: 'text'; // only text is supported for now
+      text: string;
+    }>;
   }>;
-};
+}

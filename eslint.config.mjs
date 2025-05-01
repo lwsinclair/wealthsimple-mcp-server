@@ -14,6 +14,11 @@ const eslintConfig = [
   ...compat.extends('plugin:prettier/recommended'),
   {
     rules: {
+      '@typescript-eslint/ban-ts-comment': 'warn',
+    },
+  },
+  {
+    rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
