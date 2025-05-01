@@ -32,7 +32,8 @@ const handler = async (_args: Record<string, unknown> | undefined) => {
 export const getStatusTool: ToolDefinition = {
   schema: {
     name: 'get_wealthsimple_status',
-    description: 'Get the status of Wealthsimple',
+    description:
+      'Get the status of Wealthsimple, only to be used if the user asks something like "Is Wealthsimple currently down?"',
     // no inputs
     inputSchema: {},
   },
