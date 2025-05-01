@@ -72,7 +72,8 @@ const handler = async (args: Record<string, unknown> | undefined) => {
 export const searchHelpCentreTool: ToolDefinition = {
   schema: {
     name: 'search_wealthsimple_help_centre',
-    description: 'Search Wealthsimple Help Centre articles',
+    description:
+      'Search Wealthsimple Help Centre articles by query. The query should be concise as it is keyword based and does not support natural language search well. For example: "What is the minimum balance for a TFSA?" = BAD, "TFSA minimum balance" = GOOD',
     inputSchema: searchHelpCentreArgsSchema.shape,
   },
   handler,
