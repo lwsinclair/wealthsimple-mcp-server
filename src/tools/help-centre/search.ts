@@ -7,7 +7,7 @@ const searchHelpCentreArgsSchema = z.object({
   query: z
     .string()
     .describe(
-      'Search query. The query should be concise as it is keyword based and does not support natural language search well. For example: "What is the minimum balance for a TFSA?" = BAD, "TFSA minimum balance" = GOOD. Leave out redundant words like "wealthsimple" since it is implied.'
+      'Search query. The query should be concise and include only the **most** important keywords (does not support natural language search). For example: "What is the minimum balance for a TFSA?" = BAD, "TFSA minimum balance" = GOOD. "how does ReFILE work with wealthsimple tax?" = BAD, "ReFILE" = GOOD. Leave out redundant words like "wealthsimple" since it is implied.'
     ),
   locale: z
     .enum(['en-ca', 'fr-ca'])
@@ -78,7 +78,8 @@ const searchHandler = async (
 export const searchHelpCentreTool: ToolDefinition = {
   schema: {
     name: 'search_wealthsimple_help_centre',
-    description: 'Search Wealthsimple Help Centre articles by query',
+    description:
+      'Search Wealthsimple Help Centre articles by query. Use this for all non-promotions related questions about Wealthsimple offerings.',
     inputSchema: searchHelpCentreArgsSchema.shape,
   },
   handler: (args) => searchHandler(args, HELP_CENTRE_HOSTNAMES.help),
