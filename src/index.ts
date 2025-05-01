@@ -26,12 +26,10 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/sse' || url.pathname === '/sse/message') {
-      // @ts-ignore
       return WealthsimpleMCP.serveSSE('/sse').fetch(request, env, ctx);
     }
 
     if (url.pathname === '/mcp') {
-      // @ts-ignore
       return WealthsimpleMCP.serve('/mcp').fetch(request, env, ctx);
     }
 
