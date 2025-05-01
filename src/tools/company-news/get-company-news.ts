@@ -20,20 +20,43 @@ async function fetchFeed(
 ): Promise<{ items: NewsItem[]; error?: string }> {
   try {
     const response = await fetch(url);
-    const xml = await response.text();
-    const feed = extractFromXml(xml);
+    const rawContent = await response.text();
 
-    return {
-      items: (feed.entries || []).map((entry) => ({
-        title: entry.title || '',
-        link: entry.link || '',
-        pubDate: entry.published || '',
-      })),
-    };
-  } catch (error: unknown) {
+    // If response is not ok, return the full response content for debugging
+    if (!response.ok) {
+      return {
+        items: [],
+        error: `HTTP ${response.status} ${response.statusText}. Response content: ${rawContent}`,
+      };
+    }
+
+    try {
+      const feed = extractFromXml(rawContent);
+
+      return {
+        items: (feed.entries || []).map((entry) => ({
+          title: entry.title || '',
+          link: entry.link || '',
+          pubDate: entry.published || '',
+        })),
+      };
+    } catch (parseError: unknown) {
+      // Include the raw content in parsing errors to help debug
+      const errorMessage =
+        parseError instanceof Error
+          ? parseError.message
+          : 'Feed parsing failed';
+      return {
+        items: [],
+        error: `Feed parsing error: ${errorMessage}. Raw content: ${rawContent}`,
+      };
+    }
+  } catch (fetchError: unknown) {
+    console.error('Feed fetch error:', fetchError);
     return {
       items: [],
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      error:
+        fetchError instanceof Error ? fetchError.message : 'Feed fetch failed',
     };
   }
 }
