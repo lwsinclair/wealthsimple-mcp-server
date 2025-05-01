@@ -4,10 +4,7 @@ import { HelpCentreArticleResponse } from './types';
 
 const getArticleArgsSchema = z.object({
   id: z.number().describe('The ID of the Help Centre article'),
-  locale: z
-    .enum(['en-ca', 'fr-ca'])
-    .default('en-ca')
-    .describe('Locale for the article'),
+  locale: z.enum(['en-ca', 'fr-ca']).describe('Locale for the article'),
 });
 
 const handler = async (args: Record<string, unknown> | undefined) => {
