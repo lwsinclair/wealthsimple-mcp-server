@@ -2,12 +2,14 @@ import { McpAgent } from 'agents/mcp';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getStatusTool } from './tools/company-updates/get-status';
 import { getPodcastsTool } from './tools/company-updates/get-podcasts';
+import { getTldrArticlesTool } from './tools/company-updates/get-tldr-articles';
 import { searchHelpCentreTool } from './tools/help-centre/search';
 import { getHelpCentreArticleTool } from './tools/help-centre/get-article';
 
 const tools = [
   getStatusTool,
   getPodcastsTool,
+  getTldrArticlesTool,
   searchHelpCentreTool,
   getHelpCentreArticleTool,
 ];
