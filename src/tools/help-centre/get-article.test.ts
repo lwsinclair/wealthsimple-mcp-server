@@ -16,7 +16,7 @@ describe('getHelpCentreArticleTool', () => {
       },
     };
 
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
       json: () => Promise.resolve(mockArticle),
     });
 
@@ -26,7 +26,7 @@ describe('getHelpCentreArticleTool', () => {
       helpCentreType: 'help',
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(
+    expect(globalThis.fetch).toHaveBeenCalledWith(
       `https://${HELP_CENTRE_HOSTNAMES.help}/api/v2/help_center/en-ca/articles/123.json`
     );
 
@@ -42,7 +42,9 @@ describe('getHelpCentreArticleTool', () => {
 
   it('should handle fetch errors gracefully', async () => {
     const errorMessage = 'Network error';
-    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+    (globalThis.fetch as jest.Mock).mockRejectedValueOnce(
+      new Error(errorMessage)
+    );
 
     const result = await getHelpCentreArticleTool.handler({
       id: 123,

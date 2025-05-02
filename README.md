@@ -4,13 +4,13 @@ Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server t
 
 It has **limited** capabilities (for now):
 
-| Tool                                   | Description                                                  |
-| -------------------------------------- | ------------------------------------------------------------ |
-| `search_wealthsimple_promotions`       | Search through Wealthsimple's ongoing and past promotions    |
-| `search_wealthsimple_help_centre`      | Search through Wealthsimple's Help Centre articles           |
-| `get_wealthsimple_help_centre_article` | Retrieve a specific Help Centre article by its ID and locale |
-| `get_wealthsimple_status`              | Get the current operational status of Wealthsimple services  |
-| `get_wealthsimple_tldr_newsletters`    | Get the most recent TLDR newsletters from Wealthsimple       |
+| Tool                                   | Description                                                             |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| `search_wealthsimple_promotions`       | Search through Wealthsimple's ongoing and past promotions               |
+| `search_wealthsimple_help_centre`      | Search through Wealthsimple's Help Centre articles                      |
+| `get_wealthsimple_help_centre_article` | Retrieve a specific Help Centre article by its ID and locale            |
+| `get_wealthsimple_status`              | Get the current operational status of Wealthsimple services             |
+| `get_wealthsimple_news`                | Get the recent TLDR newsletters and Magazine articles from Wealthsimple |
 
 <img width="750" alt="Screenshot 2025-05-01 at 18 32 25" src="https://github.com/user-attachments/assets/54f347c9-58e9-446a-ac1f-edb8678654b9" />
 

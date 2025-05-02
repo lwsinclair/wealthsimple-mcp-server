@@ -2,7 +2,7 @@ import { searchHelpCentreTool, searchPromotionsTool } from './search';
 import { HELP_CENTRE_HOSTNAMES } from './constants';
 
 describe('Help Centre Search Tools', () => {
-  const fetchSpy = jest.spyOn(global, 'fetch');
+  const fetchSpy = jest.spyOn(globalThis, 'fetch');
 
   beforeEach(() => {
     fetchSpy.mockClear();
