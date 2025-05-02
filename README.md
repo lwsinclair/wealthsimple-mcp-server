@@ -12,7 +12,7 @@ It has **limited** capabilities (for now):
 | `get_wealthsimple_status`              | Get the current operational status of Wealthsimple services  |
 | `get_wealthsimple_tldr_newsletters`    | Get the most recent TLDR newsletters from Wealthsimple       |
 
-<img width="750" alt="Screenshot 2025-05-01 at 18 32 25" src="https://github.com/user-attachments/assets/18e55806-eaa0-4c7c-8e21-60b8c8ea4474" />
+<img width="750" alt="Screenshot 2025-05-01 at 18 32 25" src="https://github.com/user-attachments/assets/54f347c9-58e9-446a-ac1f-edb8678654b9" />
 
 ## Usage
 
