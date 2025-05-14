@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/wealthsimple-wealthsimple-mcp-server-badge.png)](https://mseep.ai/app/wealthsimple-wealthsimple-mcp-server)
+
 # Wealthsimple MCP Server [![Checks](https://github.com/wealthsimple/wealthsimple-mcp-server/actions/workflows/checks.yml/badge.svg)](https://github.com/wealthsimple/wealthsimple-mcp-server/actions/workflows/checks.yml)
 
 Wealthsimple [Model Context Protocol](https://modelcontextprotocol.io/) server to allow Claude Desktop, Cursor, OpenAI Agents SDK, and other MCP clients to query information about Wealthsimple.
